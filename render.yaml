@@ -1,0 +1,16 @@
+services:
+  - type: web
+    name: helpdesk--ticketing--system
+    env: python
+    plan: free
+    buildCommand: "pip3 install -r requirements.txt"
+    startCommand: "gunicorn app:app"
+    envVars:
+      - key: FLASK_ENV
+        value: production
+      - key: SECRET_KEY
+        sync: false
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
