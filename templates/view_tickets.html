@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Helpdesk Tickets</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+
+    <div class="container mt-5">
+        <h1 class="text-primary mb-4">All Helpdesk Tickets</h1>
+
+        <!-- Flash Message for Success -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <table class="table table-striped table-hover bg-white rounded shadow-sm">
+            <thead class="table-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Submitted By</th>
+                    <th>Email</th>
+                    <th>Category</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Submitted on</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for ticket in New_Tickets %}
+                <tr>
+                    <td>{{ ticket['id'] }}</td>
+                    <td>{{ ticket['title'] }}</td>
+                    <td>{{ ticket['description'] }}</td>
+                    <td>{{ ticket['submitted_by'] }}</td>
+                    <td>{{ ticket['email'] }}</td>
+                    <td>{{ ticket['category_name'] or 'N/A' }}</td>
+                    <td>{{ ticket['priority_level'] or 'N/A' }}</td>
+                    <td>
+                        {% set status = ticket['status']|lower %}
+
+{% if status == 'open' %}
+    <span class="badge bg-success">Open</span>
+{% elif status == 'in progress' %}
+    <span class="badge bg-warning text-dark">In Progress</span>
+{% elif status == 'closed' %}
+    <span class="badge bg-secondary">Closed</span>
+{% else %}
+    <span class="badge bg-light text-dark">Unknown</span>
+{% endif %}
+
+                    </td>
+                    <td>{{ ticket['created_at'] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <a href="{{ url_for('index') }}" class="btn btn-primary mt-3">Back to Home</a>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
