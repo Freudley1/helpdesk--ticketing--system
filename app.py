@@ -1,3 +1,5 @@
+from db_setup import initialize_database
+initialize_database()
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 import sqlite3
 import os
